@@ -11,7 +11,6 @@ terraform-get:
 .PHONY: terraform-plan
 terraform-plan: terraform-get
 	terraform plan \
-		-var 'env=${env}' \
 		-var-file=${VAR_FILE} \
 		-state=${STATE_FILE} \
 		${ENV_DIR}
@@ -19,7 +18,13 @@ terraform-plan: terraform-get
 .PHONY: terraform-apply
 terraform-apply:
 	terraform apply \
-		-var 'env=${env}' \
+		-var-file=${VAR_FILE} \
+		-state=${STATE_FILE} \
+		${ENV_DIR}
+
+.PHONY: terraform-destroy
+terraform-destroy:
+	terraform destroy \
 		-var-file=${VAR_FILE} \
 		-state=${STATE_FILE} \
 		${ENV_DIR}
