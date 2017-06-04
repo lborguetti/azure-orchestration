@@ -15,10 +15,10 @@ variable "cargo_subnet_address_prefix" {
   description = "cargo address prefix to the subnet"
 }
 
-variable "platform_fault_domain_count" {
-  description = "number of update domains"
+variable "cargo_platform_fault_domain_count" {
+  description = "cargo number of update domains"
 }
 
-variable "platform_update_domain_count" {
-  description = "number of fault domains"
+variable "cargo_platform_update_domain_count" {
+  description = "cargo number of fault domains"
 }
