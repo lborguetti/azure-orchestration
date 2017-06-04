@@ -4,7 +4,8 @@ module "network" {
   env      = "${var.env}"
   location = "${var.location}"
 
-  address_space = "${var.address_space}"
+  address_space               = "${var.address_space}"
+  cargo_subnet_address_prefix = "${var.cargo_subnet_address_prefix}"
 }
 
 module "cargo" {

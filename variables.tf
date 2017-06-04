@@ -7,6 +7,10 @@ variable "address_space" {
   type        = "list"
 }
 
+variable "cargo_subnet_address_prefix" {
+  description = "cargo address prefix to the subnet"
+}
+
 variable "location" {
   description = "region where the resources should exist"
 }
