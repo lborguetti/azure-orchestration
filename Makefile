@@ -4,6 +4,13 @@ ENV_DIR = environments/${env}
 VAR_FILE = ${ENV_DIR}/terraform.tfvars
 STATE_FILE = ${ENV_DIR}/terraform.tfstate
 
+.PHONY: setup
+setup:
+	@echo "Copying git hooks"
+	@cp githooks/pre-commit .git/hooks/pre-commit
+	@chmod +x .git/hooks/pre-commit
+	@echo "Done!"
+
 .PHONY: terraform-get
 terraform-get:
 	terraform get ${ENV_DIR}
