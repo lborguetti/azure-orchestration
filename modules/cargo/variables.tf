@@ -25,3 +25,7 @@ variable "virtual_network_name" {
 variable "virtual_network_resource_group_name" {
   description = "resource group name of the virtual network"
 }
+
+variable "virtual_machine_count" {
+  description = "number of virtual machines to launch"
+}

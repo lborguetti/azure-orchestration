@@ -3,15 +3,6 @@ resource "azurerm_resource_group" "rg" {
   location = "${var.location}"
 }
 
-resource "azurerm_availability_set" "as" {
-  name                         = "${var.env}-cargo-availability-set"
-  location                     = "${var.location}"
-  resource_group_name          = "${azurerm_resource_group.rg.name}"
-  platform_fault_domain_count  = "${var.platform_fault_domain_count}"
-  platform_update_domain_count = "${var.platform_update_domain_count}"
-  managed                      = true
-}
-
 resource "azurerm_subnet" "subnet" {
   name                 = "${var.env}-cargo-subnet"
   virtual_network_name = "${var.virtual_network_name}"
@@ -67,4 +58,27 @@ resource "azurerm_lb_rule" "lbr" {
   idle_timeout_in_minutes        = 5
   probe_id                       = "${azurerm_lb_probe.lbp.id}"
   depends_on                     = ["azurerm_lb_probe.lbp"]
+}
+
+resource "azurerm_availability_set" "as" {
+  name                         = "${var.env}-cargo-availability-set"
+  location                     = "${var.location}"
+  resource_group_name          = "${azurerm_resource_group.rg.name}"
+  platform_fault_domain_count  = "${var.platform_fault_domain_count}"
+  platform_update_domain_count = "${var.platform_update_domain_count}"
+  managed                      = true
+}
+
+resource "azurerm_network_interface" "ni" {
+  name                = "${var.env}-cargo-network-interface-${count.index}"
+  location            = "${var.location}"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  count               = "${var.virtual_machine_count}"
+
+  ip_configuration {
+    name                                    = "${var.env}-cargo-ip-configuration-${count.index}"
+    subnet_id                               = "${azurerm_subnet.subnet.id}"
+    private_ip_address_allocation           = "dynamic"
+    load_balancer_backend_address_pools_ids = ["${azurerm_lb_backend_address_pool.lbbap.id}"]
+  }
 }

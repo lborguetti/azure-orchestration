@@ -11,14 +11,18 @@ variable "address_space" {
   type        = "list"
 }
 
-variable "cargo_subnet_address_prefix" {
-  description = "cargo address prefix to the subnet"
-}
-
 variable "cargo_platform_fault_domain_count" {
   description = "cargo number of update domains"
 }
 
 variable "cargo_platform_update_domain_count" {
   description = "cargo number of fault domains"
+}
+
+variable "cargo_subnet_address_prefix" {
+  description = "cargo address prefix to the subnet"
+}
+
+variable "cargo_virtual_machine_count" {
+  description = "cargo number of virtual machines to launch"
 }
