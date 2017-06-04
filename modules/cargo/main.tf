@@ -12,6 +12,13 @@ resource "azurerm_availability_set" "as" {
   managed                      = true
 }
 
+resource "azurerm_subnet" "subnet" {
+  name                 = "${var.env}-cargo-subnet"
+  virtual_network_name = "${var.virtual_network_name}"
+  resource_group_name  = "${var.virtual_network_resource_group_name}"
+  address_prefix       = "${var.subnet_address_prefix}"
+}
+
 resource "azurerm_public_ip" "pubip" {
   name                         = "${var.env}-cargo-public-ip"
   location                     = "${var.location}"
