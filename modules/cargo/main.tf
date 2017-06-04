@@ -11,3 +11,11 @@ resource "azurerm_availability_set" "as" {
   platform_update_domain_count = "${var.platform_update_domain_count}"
   managed                      = true
 }
+
+resource "azurerm_public_ip" "pubip" {
+  name                         = "${var.env}-cargo-public-ip"
+  location                     = "${var.location}"
+  resource_group_name          = "${azurerm_resource_group.rg.name}"
+  public_ip_address_allocation = "dynamic"
+  domain_name_label            = "${var.env}-cargo"
+}
