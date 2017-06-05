@@ -110,4 +110,8 @@ resource "azurerm_virtual_machine" "vm" {
     admin_password = "${var.virtual_machine_admin_password}"
     custom_data    = "${file("${path.module}/templates/cloud-config.yaml")}"
   }
+
+  os_profile_linux_config {
+    disable_password_authentication = false
+  }
 }
