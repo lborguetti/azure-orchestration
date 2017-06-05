@@ -82,3 +82,32 @@ resource "azurerm_network_interface" "ni" {
     load_balancer_backend_address_pools_ids = ["${azurerm_lb_backend_address_pool.lbbap.id}"]
   }
 }
+
+resource "azurerm_virtual_machine" "vm" {
+  name                  = "${var.env}-cargo-virtual-machine-${count.index}"
+  location              = "${var.location}"
+  resource_group_name   = "${azurerm_resource_group.rg.name}"
+  availability_set_id   = "${azurerm_availability_set.as.id}"
+  vm_size               = "${var.virtual_machine_size}"
+  network_interface_ids = ["${element(azurerm_network_interface.ni.*.id, count.index)}"]
+  count                 = "${var.virtual_machine_count}"
+
+  storage_image_reference {
+    publisher = "CoreOS"
+    offer     = "CoreOS"
+    sku       = "Stable"
+    version   = "1353.7.0"
+  }
+
+  storage_os_disk {
+    name          = "${var.env}-cargo-os-disk-${count.index}"
+    create_option = "FromImage"
+  }
+
+  os_profile {
+    computer_name  = "${var.env}-cargo-virtual-machine-${count.index}"
+    admin_username = "${var.virtual_machine_admin_username}"
+    admin_password = "${var.virtual_machine_admin_password}"
+    custom_data    = "${file("${path.module}/templates/cloud-config.yaml")}"
+  }
+}

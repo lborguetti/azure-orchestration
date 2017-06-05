@@ -1,0 +1,23 @@
+#cloud-config
+
+coreos:
+  update:
+    reboot-strategy: off
+
+  units:
+    - name: nginx.service
+      command: start
+      content: |
+        [Unit]
+        Description=Nginx
+        After=docker.service
+        Requires=docker.service
+        [Service]
+        TimeoutStartSec=0
+        ExecStartPre=-/usr/bin/docker kill nginx
+        ExecStartPre=-/usr/bin/docker rm nginx
+        ExecStartPre=/usr/bin/docker pull nginx
+        ExecStart=/usr/bin/docker run --name nginx -p 80:80 nginx
+        ExecStop=/usr/bin/docker stop nginx
+        User=core
+        Restart=always

@@ -23,6 +23,18 @@ variable "cargo_subnet_address_prefix" {
   description = "cargo address prefix to the subnet"
 }
 
+variable "cargo_virtual_machine_admin_password" {
+  description = "cargo password to add to the virtual machine"
+}
+
+variable "cargo_virtual_machine_admin_username" {
+  description = "cargo username to add to the virtual machine"
+}
+
 variable "cargo_virtual_machine_count" {
   description = "cargo number of virtual machines to launch"
+}
+
+variable "cargo_virtual_machine_size" {
+  description = "cargo size of virtual machines to launch"
 }

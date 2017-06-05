@@ -26,6 +26,18 @@ variable "virtual_network_resource_group_name" {
   description = "resource group name of the virtual network"
 }
 
+variable "virtual_machine_admin_password" {
+  description = "password to add to the virtual machine"
+}
+
+variable "virtual_machine_admin_username" {
+  description = "username to add to the virtual machine"
+}
+
 variable "virtual_machine_count" {
   description = "number of virtual machines to launch"
+}
+
+variable "virtual_machine_size" {
+  description = "size of virtual machines to launch"
 }
