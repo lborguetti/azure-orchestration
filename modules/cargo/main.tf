@@ -69,6 +69,14 @@ resource "azurerm_availability_set" "as" {
   managed                      = true
 }
 
+resource "azurerm_public_ip" "vmpubip" {
+  name                         = "${var.env}-cargo-virutal-machine-public-ip-${count.index}"
+  location                     = "${var.location}"
+  resource_group_name          = "${azurerm_resource_group.rg.name}"
+  public_ip_address_allocation = "dynamic"
+  count                        = "${var.virtual_machine_count}"
+}
+
 resource "azurerm_network_interface" "ni" {
   name                = "${var.env}-cargo-network-interface-${count.index}"
   location            = "${var.location}"
@@ -79,6 +87,7 @@ resource "azurerm_network_interface" "ni" {
     name                                    = "${var.env}-cargo-ip-configuration-${count.index}"
     subnet_id                               = "${azurerm_subnet.subnet.id}"
     private_ip_address_allocation           = "dynamic"
+    public_ip_address_id                    = "${element(azurerm_public_ip.vmpubip.*.id, count.index)}"
     load_balancer_backend_address_pools_ids = ["${azurerm_lb_backend_address_pool.lbbap.id}"]
   }
 }
