@@ -18,6 +18,10 @@ variable "platform_update_domain_count" {
   description = "number of fault domains"
 }
 
+variable "trusted_ip" {
+  description = "trusted ip to allow ssh"
+}
+
 variable "virtual_network_name" {
   description = "virtual network name"
 }

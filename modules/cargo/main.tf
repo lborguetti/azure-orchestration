@@ -3,11 +3,66 @@ resource "azurerm_resource_group" "rg" {
   location = "${var.location}"
 }
 
+resource "azurerm_network_security_group" "nsg" {
+  name                = "${var.env}-cargo-network-security-group"
+  location            = "${var.location}"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+
+  security_rule {
+    name                       = "allow-inbound-trusted-ip"
+    priority                   = 3700
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "TCP"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "${var.trusted_ip}"
+    destination_address_prefix = "${var.subnet_address_prefix}"
+  }
+
+  security_rule {
+    name                       = "allow-inbound-internet"
+    priority                   = 3800
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "TCP"
+    source_port_range          = "*"
+    destination_port_range     = "80"
+    source_address_prefix      = "Internet"
+    destination_address_prefix = "${var.subnet_address_prefix}"
+  }
+
+  security_rule {
+    name                       = "allow-inbound-azure-load-balancer"
+    priority                   = 3900
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "TCP"
+    source_port_range          = "*"
+    destination_port_range     = "80"
+    source_address_prefix      = "AzureLoadBalancer"
+    destination_address_prefix = "${var.subnet_address_prefix}"
+  }
+
+  security_rule {
+    name                       = "deny-all"
+    priority                   = 4000
+    direction                  = "Inbound"
+    access                     = "Deny"
+    protocol                   = "*"
+    source_port_range          = "*"
+    destination_port_range     = "*"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+}
+
 resource "azurerm_subnet" "subnet" {
-  name                 = "${var.env}-cargo-subnet"
-  virtual_network_name = "${var.virtual_network_name}"
-  resource_group_name  = "${var.virtual_network_resource_group_name}"
-  address_prefix       = "${var.subnet_address_prefix}"
+  name                      = "${var.env}-cargo-subnet"
+  virtual_network_name      = "${var.virtual_network_name}"
+  resource_group_name       = "${var.virtual_network_resource_group_name}"
+  address_prefix            = "${var.subnet_address_prefix}"
+  network_security_group_id = "${azurerm_network_security_group.nsg.id}"
 }
 
 resource "azurerm_public_ip" "pubip" {
@@ -36,20 +91,22 @@ resource "azurerm_lb_backend_address_pool" "lbbap" {
 }
 
 resource "azurerm_lb_probe" "lbp" {
-  name                = "${var.env}-cargo-load-balancer-probe"
+  name                = "${var.env}-cargo-load-balancer-heep-probe"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   loadbalancer_id     = "${azurerm_lb.lb.id}"
-  protocol            = "tcp"
+
+  protocol            = "http"
   port                = 80
   interval_in_seconds = 5
   number_of_probes    = 2
+  request_path        = "/"
 }
 
 resource "azurerm_lb_rule" "lbr" {
   name                           = "${var.env}-cargo-load-balancer-rule"
   resource_group_name            = "${azurerm_resource_group.rg.name}"
   loadbalancer_id                = "${azurerm_lb.lb.id}"
-  protocol                       = "tcp"
+  protocol                       = "TCP"
   frontend_port                  = 80
   backend_port                   = 80
   frontend_ip_configuration_name = "${var.env}-cargo-frontend-ip"

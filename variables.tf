@@ -38,3 +38,7 @@ variable "cargo_virtual_machine_count" {
 variable "cargo_virtual_machine_size" {
   description = "cargo size of virtual machines to launch"
 }
+
+variable "trusted_ip" {
+  description = "trusted ip to allow ssh"
+}

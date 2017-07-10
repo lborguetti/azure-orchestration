@@ -15,6 +15,7 @@ module "cargo" {
 
   platform_fault_domain_count         = "${var.cargo_platform_fault_domain_count}"
   platform_update_domain_count        = "${var.cargo_platform_update_domain_count}"
+  trusted_ip                          = "${var.trusted_ip}"
   subnet_address_prefix               = "${var.cargo_subnet_address_prefix}"
   virtual_machine_admin_password      = "${var.cargo_virtual_machine_admin_password}"
   virtual_machine_admin_username      = "${var.cargo_virtual_machine_admin_username}"

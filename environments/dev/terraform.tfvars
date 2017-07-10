@@ -10,3 +10,5 @@ cargo_virtual_machine_admin_password = ""
 cargo_virtual_machine_admin_username = "core"
 cargo_virtual_machine_count = 3
 cargo_virtual_machine_size = "Standard_A1"
+
+trusted_ip = "0.0.0.0/0"
