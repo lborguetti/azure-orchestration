@@ -15,27 +15,15 @@
 
 ## Getting Started
 
- This project orchestrates multiple environments.  By default, commands will rely on `dev` when applied and not specified. These are the environments available:
+ This project orchestrates multiple environments. By default, commands will rely on `dev` when applied and not specified. These are the environments available:
 
 - `dev` (default)
 - `stg`
 - `prd`
 
-Let's create `dev` environment:
+Let's create the `dev` environment:
 
- 1. First, get `dev` modules.
-
-    ```console
-    $ make terraform-get env=dev
-    ```
-
-    or
-
-    ```console
-    $ make terraform-get
-    ```
-
- 1. Then generate an execution plan for Terraform.
+ 1. First generate an execution plan for Terraform.
 
     ```console
     $ make terraform-plan env=dev
