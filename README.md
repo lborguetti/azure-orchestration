@@ -1,4 +1,4 @@
-# Terraform Azure
+# Azure Orchestration
 
 ## Prerequisites
 
@@ -6,7 +6,7 @@
 
  1. Install [Azure CLI](https://docs.microsoft.com/cs-cz/cli/azure/install-azure-cli).
 
- 1. Follow these [instructions](https://www.terraform.io/docs/providers/azurerm/index.html#to-create-using-azure-cli-) to create Azure credentials then export them to your environment.
+ 1. Follow these [instructions](https://www.terraform.io/docs/providers/azurerm/index.html#creating-credentials) to create Azure credentials then export them to your environment.
 
     - `ARM_CLIENT_ID`
     - `ARM_CLIENT_SECRET`
