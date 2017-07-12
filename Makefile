@@ -1,8 +1,8 @@
 env ?= dev
 
-ENV_DIR = environments/${env}
-VAR_FILE = ${ENV_DIR}/terraform.tfvars
-STATE_FILE = ${ENV_DIR}/terraform.tfstate
+ENV_DIR = providers/azure/${env}
+PLAN_FILE = terraform.tfplan
+VAR_FILE = terraform.tfvars
 
 .PHONY: setup
 setup:
@@ -13,25 +13,26 @@ setup:
 
 .PHONY: terraform-get
 terraform-get:
-	terraform get ${ENV_DIR}
+	cd ${ENV_DIR}; \
+		terraform get .
 
 .PHONY: terraform-plan
 terraform-plan: terraform-get
-	terraform plan \
-		-var-file=${VAR_FILE} \
-		-state=${STATE_FILE} \
-		${ENV_DIR}
+	cd ${ENV_DIR}; \
+		terraform plan \
+			-var-file=${VAR_FILE} \
+			-out=${PLAN_FILE} \
+			.
 
 .PHONY: terraform-apply
 terraform-apply:
-	terraform apply \
-		-var-file=${VAR_FILE} \
-		-state=${STATE_FILE} \
-		${ENV_DIR}
+	cd ${ENV_DIR}; \
+		terraform apply ${PLAN_FILE}; \
+			rm -f ${PLAN_FILE}
 
 .PHONY: terraform-destroy
 terraform-destroy:
-	terraform destroy \
-		-var-file=${VAR_FILE} \
-		-state=${STATE_FILE} \
-		${ENV_DIR}
+	cd ${ENV_DIR}; \
+		terraform destroy \
+			-var-file=${VAR_FILE} \
+			.
