@@ -1,5 +1,5 @@
 module "network" {
-  source = "../../modules/network"
+  source = "../../../modules/network"
 
   env      = "${var.env}"
   location = "${var.location}"
@@ -8,7 +8,7 @@ module "network" {
 }
 
 module "cargo" {
-  source = "../../modules/cargo"
+  source = "../../../modules/cargo"
 
   env      = "${var.env}"
   location = "${var.location}"

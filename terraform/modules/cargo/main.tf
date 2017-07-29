@@ -174,7 +174,6 @@ resource "azurerm_virtual_machine" "vm" {
     computer_name  = "${var.env}-cargo-virtual-machine-${count.index}"
     admin_username = "${var.virtual_machine_admin_username}"
     admin_password = "${var.virtual_machine_admin_password}"
-    custom_data    = "${file("${path.module}/templates/cloud-config.yaml")}"
   }
 
   os_profile_linux_config {
@@ -184,5 +183,10 @@ resource "azurerm_virtual_machine" "vm" {
       path     = "/home/${var.virtual_machine_admin_username}/.ssh/authorized_keys"
       key_data = "${file("~/.ssh/id_rsa.pub")}"
     }
+  }
+
+  tags {
+    env  = "${var.env}"
+    role = "cargo"
   }
 }
