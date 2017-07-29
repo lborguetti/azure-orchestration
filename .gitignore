@@ -7,3 +7,8 @@
 
 # Module directory
 .terraform/
+
+# Ansible
+*.retry
+.venv-ansible/
+ansible-azure.cache
