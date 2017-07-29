@@ -1,0 +1,37 @@
+---
+- name: Ensure docker service
+  systemd:
+    name: docker
+    enabled: yes
+    state: started
+
+- name: Create directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+  with_items:
+    - "/etc/cargo"
+
+- name: Copy configurations
+  copy:
+    src: etc/cargo/nginx.conf
+    dest: /etc/cargo/nginx.conf
+    owner: root
+
+- name: Copy systemd services
+  copy:
+    src: "etc/systemd/system/{{ item }}"
+    dest: "/etc/systemd/system/{{ item }}"
+    owner: root
+  register: systemd
+  with_items:
+    - nginx.service
+
+- name: Ensure systemd services
+  systemd:
+    name: "{{ item.item }}"
+    enabled: yes
+    state: restarted
+  when: item.changed
+  with_items: "{{ systemd.results }}"

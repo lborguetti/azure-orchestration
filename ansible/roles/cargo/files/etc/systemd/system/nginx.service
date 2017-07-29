@@ -1,0 +1,13 @@
+[Unit]
+Description=Cargo nginx
+After=docker.service
+Requires=docker.service
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill nginx
+ExecStartPre=-/usr/bin/docker rm nginx
+ExecStartPre=/usr/bin/docker pull nginx
+ExecStart=/usr/bin/docker run --name nginx -p 80:80 -v /etc/cargo/nginx.conf:/etc/nginx/conf.d/default.conf nginx
+ExecStop=/usr/bin/docker stop nginx
+User=core
+Restart=always
