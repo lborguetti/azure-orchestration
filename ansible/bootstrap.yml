@@ -1,0 +1,7 @@
+---
+- name: Bootstrap virtual machine
+  gather_facts: no
+  hosts: all
+
+  roles:
+    - ansible-coreos-bootstrap
