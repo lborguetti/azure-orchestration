@@ -1,3 +1,5 @@
+.DEFAULT_GOAL := setup
+
 env ?= dev
 
 ENV_DIR = providers/azure/${env}

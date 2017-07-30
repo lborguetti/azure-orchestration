@@ -1,3 +1,5 @@
+.DEFAULT_GOAL := setup
+
 env ?= dev
 inventory ?= environments/$(env)
 tags ?= all
@@ -27,3 +29,10 @@ remote-shell:
 		-e 'ansible_python_interpreter=/home/core/bin/python' \
 		-a "$(shell)" \
 		$(ansible-args)
+
+.PHONY: setup
+setup:
+	pip install virtualenv
+	virtualenv .venv-ansible
+	source .venv-ansible/bin/activate && \
+		pip install -r requirements.txt
