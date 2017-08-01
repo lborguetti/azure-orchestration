@@ -1,4 +1,6 @@
 ---
+- include: bootstrap.yml
+
 - name: Configure cargo
   become: yes
   gather_facts: no
