@@ -7,6 +7,7 @@ user ?= core
 
 .PHONY: bootstrap
 bootstrap:
+	source .venv-ansible/bin/activate && \
 	ansible-playbook bootstrap.yml \
 		-i $(inventory) \
 		-l $(hosts) \
@@ -14,6 +15,7 @@ bootstrap:
 
 .PHONY: cargo
 cargo:
+	source .venv-ansible/bin/activate && \
 	ansible-playbook cargo.yml \
 		-i $(inventory) \
 		-t $(tags) \
@@ -21,6 +23,7 @@ cargo:
 
 .PHONY: remote-shell
 remote-shell:
+	source .venv-ansible/bin/activate && \
 	ansible $(hosts) \
 		-i $(inventory) \
 		-m shell \
