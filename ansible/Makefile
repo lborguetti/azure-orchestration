@@ -32,7 +32,7 @@ remote-shell:
 
 .PHONY: setup
 setup:
-	pip install virtualenv
+	pip install --user virtualenv
 	virtualenv .venv-ansible
 	source .venv-ansible/bin/activate && \
 		pip install -r requirements.txt
